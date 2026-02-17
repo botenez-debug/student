@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MansCash · Money Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="auth-page">
+
+  <!-- Animated background orbs -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Theme toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <span class="theme-icon">☀️</span>
+  </button>
+
+  <!-- Auth Container -->
+  <main class="auth-container">
+
+    <!-- Brand -->
+    <div class="brand" aria-label="MansCash brand">
+      <div class="brand-mark">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 28 C4 28 10 20 16 16 C22 12 28 4 28 4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M4 20 C4 20 10 16 16 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+          <circle cx="28" cy="4" r="3" fill="currentColor"/>
+        </svg>
+      </div>
+      <span class="brand-name">MansCash</span>
+    </div>
+
+    <!-- Tab switcher -->
+    <div class="auth-tabs" role="tablist">
+      <button class="tab-btn active" id="loginTab" role="tab" aria-selected="true" aria-controls="loginForm">Sign In</button>
+      <button class="tab-btn" id="registerTab" role="tab" aria-selected="false" aria-controls="registerForm">Create Account</button>
+      <div class="tab-indicator" aria-hidden="true"></div>
+    </div>
+
+    <!-- Login Form -->
+    <section class="auth-form active" id="loginForm" role="tabpanel" aria-labelledby="loginTab">
+      <h1 class="form-title">Welcome back</h1>
+      <p class="form-subtitle">Your finances, beautifully organized.</p>
+
+      <div id="loginError" class="error-banner" role="alert" aria-live="polite" hidden></div>
+
+      <form id="loginFormEl" novalidate>
+        <div class="field-group">
+          <label class="field-label" for="loginEmail">Email</label>
+          <div class="field-wrap">
+            <input class="field-input" type="email" id="loginEmail" name="email"
+              placeholder="you@example.com" autocomplete="email" required />
+            <span class="field-icon" aria-hidden="true">✉</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="loginPassword">Password</label>
+          <div class="field-wrap">
+            <input class="field-input" type="password" id="loginPassword" name="password"
+              placeholder="••••••••" autocomplete="current-password" required />
+            <button type="button" class="field-icon field-icon-btn" id="toggleLoginPw" aria-label="Show password">👁</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" type="submit">
+          <span class="btn-text">Sign In</span>
+          <span class="btn-loader" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <p class="auth-switch">Don't have an account? <button class="link-btn" id="goRegister">Create one</button></p>
+    </section>
+
+    <!-- Register Form -->
+    <section class="auth-form" id="registerForm" role="tabpanel" aria-labelledby="registerTab" hidden>
+      <h1 class="form-title">Get started</h1>
+      <p class="form-subtitle">Free forever. No credit card needed.</p>
+
+      <div id="registerError" class="error-banner" role="alert" aria-live="polite" hidden></div>
+      <div id="registerSuccess" class="success-banner" role="status" aria-live="polite" hidden></div>
+
+      <form id="registerFormEl" novalidate>
+        <div class="field-group">
+          <label class="field-label" for="regName">Full Name</label>
+          <div class="field-wrap">
+            <input class="field-input" type="text" id="regName" name="name"
+              placeholder="Jane Smith" autocomplete="name" required />
+            <span class="field-icon" aria-hidden="true">✦</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="regEmail">Email</label>
+          <div class="field-wrap">
+            <input class="field-input" type="email" id="regEmail" name="email"
+              placeholder="you@example.com" autocomplete="email" required />
+            <span class="field-icon" aria-hidden="true">✉</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="regPassword">Password</label>
+          <div class="field-wrap">
+            <input class="field-input" type="password" id="regPassword" name="password"
+              placeholder="Min 6 characters" autocomplete="new-password" required minlength="6" />
+            <button type="button" class="field-icon field-icon-btn" id="toggleRegPw" aria-label="Show password">👁</button>
+          </div>
+          <div class="password-strength" id="pwStrength" aria-live="polite">
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <span class="strength-label" id="strengthLabel"></span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" type="submit">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-loader" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <p class="auth-switch">Already have an account? <button class="link-btn" id="goLogin">Sign in</button></p>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MansCash · Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dashboard-page">
+
+  <!-- Animated background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <!-- ===== SIDEBAR ===== -->
+  <nav class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 28 C4 28 10 20 16 16 C22 12 28 4 28 4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <path d="M4 20 C4 20 10 16 16 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+            <circle cx="28" cy="4" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="brand-name">MansCash</span>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">✕</button>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebarAvatar" aria-hidden="true"></div>
+      <div class="user-info">
+        <p class="user-name" id="sidebarName">Loading...</p>
+        <p class="user-email" id="sidebarEmail">–</p>
+      </div>
+    </div>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#" class="nav-link active" data-section="overview" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">◈</span> Overview
+      </a></li>
+      <li><a href="#" class="nav-link" data-section="transactions" aria-current="false">
+        <span class="nav-icon" aria-hidden="true">⇅</span> Transactions
+      </a></li>
+      <li><a href="#" class="nav-link" data-section="analytics" aria-current="false">
+        <span class="nav-icon" aria-hidden="true">◎</span> Analytics
+      </a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button class="theme-toggle sidebar-theme" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon">☀️</span>
+        <span class="theme-label">Light Mode</span>
+      </button>
+      <button class="btn btn-logout" id="logoutBtn" aria-label="Sign out">
+        <span aria-hidden="true">⏻</span> Sign Out
+      </button>
+    </div>
+  </nav>
+
+  <!-- Sidebar overlay for mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-wrapper">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-greeting">
+        <p class="greeting-text" id="greetingText">Good morning</p>
+        <h2 class="greeting-name" id="greetingName">–</h2>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-add" id="openModal" aria-label="Add transaction">
+          <span aria-hidden="true">+</span> Add
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== OVERVIEW SECTION ===== -->
+    <section class="dashboard-section active" id="section-overview" aria-label="Financial overview">
+
+      <!-- Balance Cards -->
+      <div class="cards-grid">
+        <article class="card card-balance" aria-label="Current balance">
+          <div class="card-header">
+            <span class="card-label">Total Balance</span>
+            <span class="card-icon balance-icon" aria-hidden="true">◈</span>
+          </div>
+          <div class="card-value" id="balanceDisplay" aria-live="polite">$0.00</div>
+          <div class="card-subtext" id="balanceSubtext">Your net position</div>
+          <div class="card-shimmer" aria-hidden="true"></div>
+        </article>
+
+        <article class="card card-income" aria-label="Total income">
+          <div class="card-header">
+            <span class="card-label">Income</span>
+            <span class="card-icon" aria-hidden="true">↑</span>
+          </div>
+          <div class="card-value" id="incomeDisplay" aria-live="polite">$0.00</div>
+          <div class="card-subtext" id="incomeCount">0 transactions</div>
+        </article>
+
+        <article class="card card-expense" aria-label="Total expenses">
+          <div class="card-header">
+            <span class="card-label">Expenses</span>
+            <span class="card-icon" aria-hidden="true">↓</span>
+          </div>
+          <div class="card-value" id="expenseDisplay" aria-live="polite">$0.00</div>
+          <div class="card-subtext" id="expenseCount">0 transactions</div>
+        </article>
+      </div>
+
+      <!-- Savings Progress -->
+      <div class="savings-row">
+        <div class="savings-card">
+          <div class="savings-info">
+            <span class="savings-label">Savings Rate</span>
+            <span class="savings-value" id="savingsRate">0%</span>
+          </div>
+          <div class="savings-bar-track" aria-hidden="true">
+            <div class="savings-bar-fill" id="savingsBar"></div>
+          </div>
+        </div>
+
+        <!-- Circular progress -->
+        <div class="circle-progress-wrap" aria-label="Savings rate visual">
+          <svg class="circle-svg" viewBox="0 0 80 80" aria-hidden="true">
+            <circle class="circle-bg" cx="40" cy="40" r="34"/>
+            <circle class="circle-fill" id="circleFill" cx="40" cy="40" r="34"
+              stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+          </svg>
+          <div class="circle-label" id="circleLabel">0%</div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions Preview -->
+      <div class="section-header">
+        <h3 class="section-title">Recent Activity</h3>
+        <button class="link-btn small" id="viewAllBtn">View all →</button>
+      </div>
+
+      <div class="transaction-list" id="recentList" aria-label="Recent transactions" aria-live="polite">
+        <!-- populated by JS -->
+      </div>
+
+    </section>
+
+    <!-- ===== TRANSACTIONS SECTION ===== -->
+    <section class="dashboard-section" id="section-transactions" aria-label="All transactions" hidden>
+
+      <div class="section-header">
+        <h3 class="section-title">All Transactions</h3>
+        <div class="filter-group" role="group" aria-label="Filter transactions">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="income">Income</button>
+          <button class="filter-btn" data-filter="expense">Expenses</button>
+        </div>
+      </div>
+
+      <div class="search-wrap">
+        <input class="search-input" type="search" id="searchInput" placeholder="Search transactions…" aria-label="Search transactions" />
+        <span class="search-icon" aria-hidden="true">⌕</span>
+      </div>
+
+      <div class="transaction-list" id="allTransactionList" aria-label="Transaction list" aria-live="polite">
+        <!-- populated by JS -->
+      </div>
+
+    </section>
+
+    <!-- ===== ANALYTICS SECTION ===== -->
+    <section class="dashboard-section" id="section-analytics" aria-label="Analytics" hidden>
+      <h3 class="section-title" style="margin-bottom:1.5rem">Spending Analytics</h3>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <p class="chart-title">Income vs Expenses</p>
+          <div class="chart-wrap">
+            <canvas id="barChart" aria-label="Bar chart: income vs expenses"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <p class="chart-title">Category Breakdown</p>
+          <div class="chart-wrap chart-wrap-doughnut">
+            <canvas id="doughnutChart" aria-label="Doughnut chart: categories"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Avg Transaction</span>
+          <span class="stat-value" id="avgTx">$0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Largest Expense</span>
+          <span class="stat-value" id="largestExp">$0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Largest Income</span>
+          <span class="stat-value" id="largestInc">$0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Total Transactions</span>
+          <span class="stat-value" id="totalTx">0</span>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- end main-wrapper -->
+
+  <!-- ===== ADD TRANSACTION MODAL ===== -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true"
+    aria-labelledby="modalTitle" hidden>
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">New Transaction</h2>
+        <button class="modal-close" id="closeModal" aria-label="Close modal">✕</button>
+      </div>
+
+      <form id="transactionForm" novalidate>
+        <div class="type-toggle" role="group" aria-label="Transaction type">
+          <button type="button" class="type-btn active" data-type="income" aria-pressed="true">
+            <span aria-hidden="true">↑</span> Income
+          </button>
+          <button type="button" class="type-btn" data-type="expense" aria-pressed="false">
+            <span aria-hidden="true">↓</span> Expense
+          </button>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="txTitle">Title</label>
+          <div class="field-wrap">
+            <input class="field-input" type="text" id="txTitle" name="title"
+              placeholder="e.g. Freelance payment" required />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="txAmount">Amount</label>
+            <div class="field-wrap">
+              <input class="field-input" type="number" id="txAmount" name="amount"
+                placeholder="0.00" min="0.01" step="0.01" required />
+              <span class="field-icon" aria-hidden="true">$</span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="txDate">Date</label>
+            <div class="field-wrap">
+              <input class="field-input" type="date" id="txDate" name="date" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="txCategory">Category</label>
+          <div class="field-wrap">
+            <select class="field-input field-select" id="txCategory" name="category" required>
+              <option value="">Select category</option>
+              <optgroup label="Income">
+                <option value="Salary">💼 Salary</option>
+                <option value="Freelance">💻 Freelance</option>
+                <option value="Investment">📈 Investment</option>
+                <option value="Gift">🎁 Gift</option>
+                <option value="Other Income">✦ Other Income</option>
+              </optgroup>
+              <optgroup label="Expense">
+                <option value="Housing">🏠 Housing</option>
+                <option value="Food">🍔 Food</option>
+                <option value="Transport">🚗 Transport</option>
+                <option value="Health">💊 Health</option>
+                <option value="Entertainment">🎬 Entertainment</option>
+                <option value="Shopping">🛍 Shopping</option>
+                <option value="Utilities">⚡ Utilities</option>
+                <option value="Education">📚 Education</option>
+                <option value="Other Expense">✦ Other Expense</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <div id="txError" class="error-banner" role="alert" aria-live="polite" hidden></div>
+
+        <button class="btn btn-primary btn-full" type="submit">
+          <span class="btn-text">Add Transaction</span>
+          <span class="btn-loader" aria-hidden="true"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete confirmation toast -->
+  <div class="toast" id="deleteToast" role="alert" aria-live="polite" hidden>
+    <span class="toast-msg">Transaction deleted</span>
+    <button class="toast-undo" id="undoDelete">Undo</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
